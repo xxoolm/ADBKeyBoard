@@ -23,6 +23,10 @@ is not going to work.
 
 ADBKeyboard will help in these cases, especially in device automation and testings.
 
+Download APK from release page
+---------------------
+* APK download: [https://github.com/senzhk/ADBKeyBoard/blob/master/ADBKeyboard.apk]
+
 Build and install APK
 ---------------------
 
@@ -36,7 +40,12 @@ With one device or emulator connected, use these simple steps to install the key
 How to Use
 ----------
 
- * Enable 'ADBKeyBoard' in the Language&Input Settings.
+ * Enable 'ADBKeyBoard' in the Language&Input Settings OR from adb.
+```
+adb install ADBKeyboard.apk 
+adb shell ime enable com.android.adbkeyboard/.AdbIME
+adb shell ime set com.android.adbkeyboard/.AdbIME   
+```
  * Set it as Default Keyboard OR Select it as the current input method of certain EditText view.
  * Sending Broadcast intent via Adb or your Android Services/Apps.
 
@@ -73,12 +82,20 @@ To send 😸 Cat
 adb shell am broadcast -a ADB_INPUT_CHARS --eia chars '128568,32,67,97,116'
 
 5. Send meta keys
-To send Ctrl+Space
-adb shell am broadcast -a ADB_INPUT_MCODE --eia mcode '4096,62'
+To send Ctrl + A as below: (4096 is META_CONTROL_ON, 8192 is META_CONTROL_LEFT_ON, 29 is KEYCODE_A)
+adb shell am broadcast -a ADB_INPUT_TEXT --es mcode '4096,29' // one metaState.
+or
+adb shell am broadcast -a ADB_INPUT_TEXT --es mcode '4096+8192,29' // two metaState.
+
 
 6. CLEAR all text (starting from v2.0)
 adb shell am broadcast -a ADB_CLEAR_TEXT
 
+</pre>
+
+Enable ADBKeyBoard from adb :
+<pre>
+adb shell ime enable com.android.adbkeyboard/.AdbIME
 </pre>
 
 Switch to ADBKeyBoard from adb (by [robertio](https://github.com/robertio)) :
@@ -94,6 +111,11 @@ adb shell ime set com.nuance.swype.dtc/com.nuance.swype.input.IME
 Check your available virtual keyboards:
 <pre>
 adb shell ime list -a  
+</pre>
+
+Reset to default, don't care which keyboard was chosen before switch:
+<pre>
+adb shell ime reset
 </pre>
 
 You can try the apk with my debug build: https://github.com/senzhk/ADBKeyBoard/raw/master/ADBKeyboard.apk
